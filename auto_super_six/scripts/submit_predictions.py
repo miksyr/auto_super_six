@@ -68,8 +68,7 @@ def submit_predictions():
         )
 
     super_six_webpage.submit_match_predictions(
-        score_predictions=tuple(score.runnerName.split(' - ', 1) for score in correct_score_predictions)
+        score_predictions=tuple(score.runnerName.split(' - ', 1) for score in correct_score_predictions),
+        golden_goal_minute=15
     )
-
-
 
