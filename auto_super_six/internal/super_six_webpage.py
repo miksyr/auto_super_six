@@ -56,7 +56,9 @@ class SuperSixWebpage:
             by=By.XPATH,
             value="//input[contains(@data-test-id, 'match-team-prediction-away-score')]"
         )
-        for score_prediction, home_team_score_elem, away_team_score_elem in zip(score_predictions, home_team_score_elements, away_team_score_elements):
+        for score_prediction, home_team_score_elem, away_team_score_elem in zip(
+                score_predictions, home_team_score_elements, away_team_score_elements
+        ):
             home_team_score_elem.send_keys(score_prediction[0])
             away_team_score_elem.send_keys(score_prediction[1])
         golden_goal_element = self.web_driver.find_element(
