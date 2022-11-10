@@ -77,4 +77,4 @@ def submit_predictions():
 
 
 if __name__ == "__main__":
-    fire.Fire(submit_predictions())
+    fire.Fire(submit_predictions)
