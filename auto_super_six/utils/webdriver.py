@@ -19,5 +19,5 @@ def get_default_firefox_options(run_headless: bool):
 def get_firefox_web_driver(run_headless: bool, options: Optional[Options] = None):
     return Firefox(
         executable_path=os.environ["GECKODRIVER_PATH"],
-        options=options or get_default_firefox_options(run_headless=run_headless)
+        options=options or get_default_firefox_options(run_headless=run_headless),
     )

@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class HomeOrAway(Enum):
-    HOME = 'home'
-    AWAY = 'away'
+    HOME = "home"
+    AWAY = "away"

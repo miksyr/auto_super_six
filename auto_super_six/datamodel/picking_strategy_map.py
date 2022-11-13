@@ -1,6 +1,10 @@
 from enum import Enum
 
-from auto_super_six.internal.picking_strategy import BasePickingStrategy, SampleUsingProbabilities, TakeMostLikely
+from auto_super_six.internal.picking_strategies import (
+    BasePickingStrategy,
+    SampleUsingProbabilities,
+    TakeMostLikely,
+)
 
 
 class StrategyNotFound(Exception):
@@ -17,4 +21,6 @@ class PickingStrategyMap(Enum):
         for strategy in cls:
             if strategy.name == strategy_name:
                 return strategy.value
-        raise StrategyNotFound(f"{strategy_name} not found.  Use one of; {cls.enum_members}")
+        raise StrategyNotFound(
+            f"{strategy_name} not found.  Use one of; {cls.enum_members}"
+        )
