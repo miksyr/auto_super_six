@@ -67,5 +67,5 @@ class SuperSixWebpage:
         )
         golden_goal_element.clear()
         golden_goal_element.send_keys(golden_goal_minute)
-        sleep(2)
+        sleep(3)
         self.web_driver.find_element(by=By.ID, value='js-fixtures-submit-entry').click()
