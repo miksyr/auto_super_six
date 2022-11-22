@@ -11,4 +11,5 @@ class SampleUsingProbabilities(BasePickingStrategy):
         score_probabilities = np.array(
             [1 / r.get_best_back_price().price for r in runners]
         )
-        return runners[np.argmax(score_probabilities)]
+        renormed_score_probabilities = score_probabilities / sum(score_probabilities)
+        return np.random.choice(a=runners, p=renormed_score_probabilities)
