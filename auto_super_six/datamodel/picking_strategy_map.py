@@ -20,7 +20,7 @@ class PickingStrategyMap(Enum):
     def get_strategy(cls, strategy_name: str) -> BasePickingStrategy:
         for strategy in cls:
             if strategy.name == strategy_name:
-                return strategy.value
+                return strategy.value()
         raise StrategyNotFound(
             f"{strategy_name} not found.  Use one of; {cls.enum_members}"
         )
