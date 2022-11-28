@@ -76,7 +76,7 @@ def submit_predictions(strategy_name: str = "mle"):
                 r for r in all_correct_score_runners if "-" in r.runnerName
             ]
             runner_choice = strategy.pick_selection(runners=numeric_only_score_runners)
-            all_correct_score_runners.append(runner_choice)
+            correct_score_predictions.append(runner_choice)
 
         super_six_webpage.submit_match_predictions(
             score_predictions=tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions),
