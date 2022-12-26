@@ -8,10 +8,7 @@ from auto_super_six.internal.picking_strategies import SampleUsingProbabilities
 
 @pytest.mark.parametrize(
     "back_odds, num_selections",
-    [
-        ([2, 3, 4, 5], 10),
-        ([1, 100, 200, 300, 5, 6, 67], 20)
-    ]
+    [([2, 3, 4, 5], 10), ([1, 100, 200, 300, 5, 6, 67], 20)],
 )
 def test_sample_using_probabilities(back_odds: List[float], num_selections: int):
     runners = []
