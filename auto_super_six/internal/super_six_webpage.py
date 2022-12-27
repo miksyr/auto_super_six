@@ -18,7 +18,15 @@ class SuperSixWebpage:
         self.super_six_url = super_six_url
         self.web_driver.get(url=super_six_url)
 
+    def _accept_cookies(self) -> None:
+        sleep(2)
+        self.web_driver.find_element(
+            by=By.ID, value="onetrust-accept-btn-handler"
+        ).click()
+        sleep(1)
+
     def login(self, username: str, pin_code: str) -> None:
+        self._accept_cookies()
         self.web_driver.find_element(by=By.ID, value="account-bar-login-btn").click()
         self.web_driver.find_element(by=By.ID, value="username").send_keys(username)
         self.web_driver.find_element(by=By.ID, value="pin").send_keys(pin_code)
