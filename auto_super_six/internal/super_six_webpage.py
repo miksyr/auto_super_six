@@ -12,7 +12,7 @@ class SuperSixWebpage:
     def __init__(
         self,
         web_driver: WebDriver,
-        super_six_url: Optional[str] = "https://super6.skysports.com/",
+        super_six_url: str = "https://super6.skysports.com/",
     ):
         self.web_driver = web_driver
         self.super_six_url = super_six_url
@@ -61,7 +61,7 @@ class SuperSixWebpage:
         return tuple(v.text.lower() for v in team_containers)
 
     def submit_match_predictions(
-        self, score_predictions: Tuple[int, int], golden_goal_minute: int
+        self, score_predictions: Tuple[List[int]], golden_goal_minute: int
     ) -> None:
         self.web_driver.get("https://super6.skysports.com/play")
         sleep(2)
