@@ -12,6 +12,7 @@ class SuperSixCompetition(Enum):
     EUROPA_LEAGUE = ("Europa League", 2005)
     CARABAO_CUP = ("Carabao Cup", 2134)
     WORLD_CUP = ("FIFA World Cup", 12469077)
+    FA_CUP = ("FA Cup", 30558)
 
     def __init__(self, competition_name: str, betfair_competition_id: int):
         self.competition_name = competition_name
