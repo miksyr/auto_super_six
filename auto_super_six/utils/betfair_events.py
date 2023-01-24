@@ -10,7 +10,7 @@ def _match_by_text_query(
         marketTypes=[MarketTypes.FULLTIME_SCORELINE],
         competitionIds=[competition_id],
         textQuery=text_query,
-        daysAhead=7,
+        daysAhead=9,
     )
     if len(betfair_events) != 1:
         raise IndexError(f"{len(betfair_events)} events found for {text_query}")
@@ -38,8 +38,15 @@ def get_betfair_event(
                 competition_id=competition_id,
             )
         except IndexError:
-            return _match_by_text_query(
-                betfair_client=betfair_client,
-                text_query=away_team_name,
-                competition_id=competition_id,
-            )
+            try:
+                return _match_by_text_query(
+                    betfair_client=betfair_client,
+                    text_query=away_team_name,
+                    competition_id=competition_id,
+                )
+            except IndexError:
+                return _match_by_text_query(
+                    betfair_client=betfair_client,
+                    text_query=home_team_name.split(' ')[0],
+                    competition_id=competition_id
+                )
