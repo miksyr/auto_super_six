@@ -10,7 +10,7 @@ def _match_by_text_query(
         marketTypes=[MarketTypes.FULLTIME_SCORELINE],
         competitionIds=[competition_id],
         textQuery=text_query,
-        daysAhead=2,
+        daysAhead=5,
     )
     if len(betfair_events) != 1:
         raise IndexError(f"{len(betfair_events)} events found for {text_query}")
