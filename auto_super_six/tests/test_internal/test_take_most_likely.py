@@ -10,7 +10,7 @@ from auto_super_six.internal.picking_strategies import TakeMostLikely
     "back_odds, num_selections",
     [([2, 3, 4, 5], 10), ([1, 100, 200, 300, 5, 6, 67], 20)],
 )
-def test_sample_using_probabilities(back_odds: List[float], num_selections: int):
+def test_take_most_likely(back_odds: List[float], num_selections: int):
     runners = []
     for back_odd in back_odds:
         runner = Runner(runnerId=1, runnerName="1", handicap=0)
