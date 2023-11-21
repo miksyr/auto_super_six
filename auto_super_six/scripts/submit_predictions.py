@@ -1,6 +1,8 @@
 import sys
+
 sys.path.append("../../")
 import os
+from typing import Optional
 
 from betfair_api_client import BetfairApiClient
 import fire
@@ -12,11 +14,12 @@ from auto_super_six.utils.betfair_events import get_betfair_event
 from auto_super_six.utils.webdriver import get_firefox_web_driver
 
 
-def submit_predictions(strategy_name: str = "mle"):
-
+def submit_predictions(strategy_name: str = "sample_topn", top_n: Optional[int] = 3):
     strategy = PickingStrategyMap.get_strategy(strategy_name=strategy_name)
 
-    with get_firefox_web_driver(run_headless=False, implicit_wait_time=10) as web_driver:
+    with get_firefox_web_driver(
+        run_headless=False, implicit_wait_time=10
+    ) as web_driver:
         super_six_webpage = SuperSixWebpage(web_driver=web_driver)
         super_six_webpage.login(
             username=os.environ["SUPER_SIX_USERNAME"],
@@ -49,11 +52,20 @@ def submit_predictions(strategy_name: str = "mle"):
                 competition_id=competition.betfair_competition_id,
             )
             betfair_client.update_prices_for_events(events=[betfair_event])
-            all_correct_score_runners = betfair_event.get_all_markets()[0].get_all_runners()
+            all_correct_score_runners = betfair_event.get_all_markets()[
+                0
+            ].get_all_runners()
             numeric_only_score_runners = [
                 r for r in all_correct_score_runners if "-" in r.runnerName
             ]
-            runner_choice = strategy.pick_selection(runners=numeric_only_score_runners)
+            if strategy_name == "sample_topn":
+                runner_choice = strategy.pick_selection(
+                    runners=numeric_only_score_runners, n=top_n
+                )
+            else:
+                runner_choice = strategy.pick_selection(
+                    runners=numeric_only_score_runners
+                )
             correct_score_predictions.append(runner_choice)
 
         super_six_webpage.submit_match_predictions(

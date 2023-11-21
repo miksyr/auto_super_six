@@ -1,3 +1,4 @@
 from .base_picking_strategy import BasePickingStrategy
+from .sample_top_n_probabilities import SampleTopNProbabilities
 from .sample_using_probabilities import SampleUsingProbabilities
 from .take_most_likely import TakeMostLikely

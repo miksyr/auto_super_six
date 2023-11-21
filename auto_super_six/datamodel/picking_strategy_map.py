@@ -2,6 +2,7 @@ from enum import Enum
 
 from auto_super_six.internal.picking_strategies import (
     BasePickingStrategy,
+    SampleTopNProbabilities,
     SampleUsingProbabilities,
     TakeMostLikely,
 )
@@ -12,9 +13,9 @@ class StrategyNotFound(Exception):
 
 
 class PickingStrategyMap(Enum):
-
-    prob = SampleUsingProbabilities
     mle = TakeMostLikely
+    prob = SampleUsingProbabilities
+    sample_topn = SampleTopNProbabilities
 
     @classmethod
     def get_strategy(cls, strategy_name: str) -> BasePickingStrategy:
