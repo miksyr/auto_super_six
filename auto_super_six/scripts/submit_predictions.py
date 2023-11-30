@@ -6,6 +6,7 @@ from typing import Optional
 
 from betfair_api_client import BetfairApiClient
 import fire
+import numpy as np
 
 from auto_super_six.datamodel.super_six_competition import SuperSixCompetition
 from auto_super_six.datamodel.picking_strategy_map import PickingStrategyMap
@@ -74,6 +75,12 @@ def submit_predictions(strategy_name: str = "sample_topn", top_n: Optional[int] 
             ),
             golden_goal_minute=15,
         )
+
+        probability_of_winning = np.product(
+            [(1 / v.get_best_back_price().price) for v in correct_score_predictions]
+        )
+        odds_of_winning = 1 / probability_of_winning
+        print(f"chances of wininning: 1 in {odds_of_winning}")
 
 
 if __name__ == "__main__":
