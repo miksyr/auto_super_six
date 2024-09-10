@@ -1,10 +1,10 @@
 from time import sleep
 from typing import List, Tuple
 
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.common.exceptions import NoSuchElementException
 
 from auto_super_six.datamodel.home_or_away import HomeOrAway
 
