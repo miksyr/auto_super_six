@@ -23,6 +23,11 @@ def submit_predictions(strategy_name: str = "sample_topn", top_n: Optional[int] 
             username=os.environ["SUPER_SIX_USERNAME"],
             pin_code=os.environ["SUPER_SIX_PIN"],
         )
+
+        if super_six_webpage.is_already_submitted():
+            print("Predictions already submitted")
+            return
+
         matches_to_predict = super_six_webpage.get_matches_to_predict()
 
         betfair_client = BetfairApiClient(

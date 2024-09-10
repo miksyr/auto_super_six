@@ -1,9 +1,10 @@
 from time import sleep
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.common.exceptions import NoSuchElementException
 
 from auto_super_six.datamodel.home_or_away import HomeOrAway
 
@@ -43,7 +44,7 @@ class SuperSixWebpage:
         return teams
 
     def get_matches_to_predict(self) -> List[WebElement]:
-        self.web_driver.get("https://super6.skysports.com/play")
+        self.web_driver.get(f"{self.super_six_url}/play")
         sleep(2)
         return self.web_driver.find_elements(
             by=By.XPATH, value="//*[contains(@data-test-id, 'match-container-')]"
@@ -60,8 +61,19 @@ class SuperSixWebpage:
         )
         return tuple(v.text.lower() for v in team_containers)
 
+    def is_already_submitted(self) -> bool:
+        self.web_driver.get(f"{self.super_six_url}/play")
+        try:
+            self.web_driver.find_element(
+                by=By.XPATH,
+                value="//button[contains(@data-test-id, 'show-predictions-edit-button')]",
+            )
+            return True
+        except NoSuchElementException:
+            return False
+
     def input_match_predictions(self, score_predictions: Tuple[List[int]]) -> None:
-        self.web_driver.get("https://super6.skysports.com/play")
+        self.web_driver.get(f"{self.super_six_url}/play")
         sleep(2)
         home_team_score_elements = self.web_driver.find_elements(
             by=By.XPATH,
