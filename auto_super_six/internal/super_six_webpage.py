@@ -19,7 +19,7 @@ class SuperSixWebpage:
         self.web_driver.get(url=super_six_url)
 
     def _accept_cookies(self) -> None:
-        sleep(2)
+        sleep(3)
         self.web_driver.find_element(
             by=By.ID, value="onetrust-accept-btn-handler"
         ).click()
@@ -60,28 +60,34 @@ class SuperSixWebpage:
         )
         return tuple(v.text.lower() for v in team_containers)
 
-    def submit_match_predictions(
-        self, score_predictions: Tuple[List[int]], golden_goal_minute: int
-    ) -> None:
+    def input_match_predictions(self, score_predictions: Tuple[List[int]]) -> None:
         self.web_driver.get("https://super6.skysports.com/play")
         sleep(2)
         home_team_score_elements = self.web_driver.find_elements(
             by=By.XPATH,
-            value="//input[contains(@data-test-id, 'match-team-prediction-home-score')]",
+            value="//button[contains(@data-test-id, 'match-team-prediction-home-increase')]",
         )
         away_team_score_elements = self.web_driver.find_elements(
             by=By.XPATH,
-            value="//input[contains(@data-test-id, 'match-team-prediction-away-score')]",
+            value="//button[contains(@data-test-id, 'match-team-prediction-away-increase')]",
         )
+
         for score_prediction, home_team_score_elem, away_team_score_elem in zip(
             score_predictions, home_team_score_elements, away_team_score_elements
         ):
-            home_team_score_elem.send_keys(score_prediction[0])
-            away_team_score_elem.send_keys(score_prediction[1])
+            for _ in range(int(score_prediction[0])):
+                home_team_score_elem.click()
+
+            for _ in range(int(score_prediction[1])):
+                away_team_score_elem.click()
+
+    def input_golden_goal_minute(self, golden_goal_minute: int) -> None:
         golden_goal_element = self.web_driver.find_element(
             by=By.XPATH, value="//input[@data-test-id = 'play-golden-goal-input']"
         )
         golden_goal_element.clear()
         golden_goal_element.send_keys(golden_goal_minute)
-        sleep(5)
+
+    def submit_predictions(self) -> None:
+        sleep(1)
         self.web_driver.find_element(by=By.ID, value="js-fixtures-submit-entry").click()

@@ -47,6 +47,6 @@ def get_betfair_event(
             except IndexError:
                 return _match_by_text_query(
                     betfair_client=betfair_client,
-                    text_query=home_team_name.split(' ')[0],
-                    competition_id=competition_id
+                    text_query=home_team_name.split(" ")[0],
+                    competition_id=competition_id,
                 )
