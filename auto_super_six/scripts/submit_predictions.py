@@ -1,12 +1,12 @@
 import os
 from typing import Optional
 
-from betfair_api_client import BetfairApiClient
 import fire
 import numpy as np
+from betfair_api_client import BetfairApiClient
 
-from auto_super_six.datamodel.super_six_competition import SuperSixCompetition
 from auto_super_six.datamodel.picking_strategy_map import PickingStrategyMap
+from auto_super_six.datamodel.super_six_competition import SuperSixCompetition
 from auto_super_six.internal.super_six_webpage import SuperSixWebpage
 from auto_super_six.utils.betfair_events import get_betfair_event
 from auto_super_six.utils.webdriver import get_firefox_web_driver
@@ -15,9 +15,7 @@ from auto_super_six.utils.webdriver import get_firefox_web_driver
 def submit_predictions(strategy_name: str = "sample_topn", top_n: Optional[int] = 3):
     strategy = PickingStrategyMap.get_strategy(strategy_name=strategy_name)
 
-    with get_firefox_web_driver(
-        run_headless=False, implicit_wait_time=10
-    ) as web_driver:
+    with get_firefox_web_driver(run_headless=False, implicit_wait_time=10) as web_driver:
         super_six_webpage = SuperSixWebpage(web_driver=web_driver)
         super_six_webpage.login(
             username=os.environ["SUPER_SIX_USERNAME"],
@@ -41,13 +39,9 @@ def submit_predictions(strategy_name: str = "sample_topn", top_n: Optional[int] 
         correct_score_predictions = []
         for match in matches_to_predict:
             competition = SuperSixCompetition.get_competition_enum(
-                competition_name=super_six_webpage.get_competition(
-                    match_container_element=match
-                )
+                competition_name=super_six_webpage.get_competition(match_container_element=match)
             )
-            home_team_name, away_team_name = super_six_webpage.get_team_names(
-                match_container_element=match
-            )
+            home_team_name, away_team_name = super_six_webpage.get_team_names(match_container_element=match)
             betfair_event = get_betfair_event(
                 betfair_client=betfair_client,
                 home_team_name=home_team_name,
@@ -55,40 +49,24 @@ def submit_predictions(strategy_name: str = "sample_topn", top_n: Optional[int] 
                 competition_id=competition.betfair_competition_id,
             )
             betfair_client.update_prices_for_events(events=[betfair_event])
-            all_correct_score_runners = betfair_event.get_all_markets()[
-                0
-            ].get_all_runners()
-            numeric_only_score_runners = [
-                r for r in all_correct_score_runners if "-" in r.runnerName
-            ]
+            all_correct_score_runners = betfair_event.get_all_markets()[0].get_all_runners()
+            numeric_only_score_runners = [r for r in all_correct_score_runners if "-" in r.runnerName]
             if strategy_name == "sample_topn":
-                runner_choice = strategy.pick_selection(
-                    runners=numeric_only_score_runners, n=top_n
-                )
+                runner_choice = strategy.pick_selection(runners=numeric_only_score_runners, n=top_n)
             else:
-                runner_choice = strategy.pick_selection(
-                    runners=numeric_only_score_runners
-                )
+                runner_choice = strategy.pick_selection(runners=numeric_only_score_runners)
             correct_score_predictions.append(runner_choice)
 
-        print(
-            tuple(
-                score.runnerName.split(" - ", 1) for score in correct_score_predictions
-            )
-        )
+        print(tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions))
         print()
 
         super_six_webpage.input_match_predictions(
-            score_predictions=tuple(
-                score.runnerName.split(" - ", 1) for score in correct_score_predictions
-            )
+            score_predictions=tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions)
         )
 
         super_six_webpage.input_golden_goal_minute(golden_goal_minute=15)
 
-        probability_of_winning = np.product(
-            [(1 / v.get_best_back_price().price) for v in correct_score_predictions]
-        )
+        probability_of_winning = np.product([(1 / v.get_best_back_price().price) for v in correct_score_predictions])
         odds_of_winning = 1 / probability_of_winning
         print(f"chances of wininning: 1 in {odds_of_winning}")
 

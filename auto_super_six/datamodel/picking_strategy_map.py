@@ -22,6 +22,4 @@ class PickingStrategyMap(Enum):
         for strategy in cls:
             if strategy.name == strategy_name:
                 return strategy.value()
-        raise StrategyNotFound(
-            f"{strategy_name} not found.  Use one of; {cls.enum_members}"
-        )
+        raise StrategyNotFound(f"{strategy_name} not found.  Use one of; {cls.enum_members}")

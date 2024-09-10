@@ -1,4 +1,5 @@
 import pytest
+
 from auto_super_six.datamodel.picking_strategy_map import PickingStrategyMap
 from auto_super_six.internal.picking_strategies import (
     BasePickingStrategy,

@@ -1,7 +1,7 @@
 from typing import List
 
-from betfair_api_client.datamodel.runner import Runner
 import numpy as np
+from betfair_api_client.datamodel.runner import Runner
 
 from auto_super_six.internal.picking_strategies import BasePickingStrategy
 
