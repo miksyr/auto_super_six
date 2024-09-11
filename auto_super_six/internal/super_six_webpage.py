@@ -29,10 +29,12 @@ class SuperSixWebpage:
 
     def login(self, username: str, pin_code: str) -> None:
         self._accept_cookies()
-        self.web_driver.find_element(by=By.ID, value="account-bar-login-btn").click()
+        login = self.web_driver.find_element(by=By.ID, value="account-bar-login-btn")
+        self.web_driver.execute_script("arguments[0].click();", login)
         self.web_driver.find_element(by=By.ID, value="username").send_keys(username)
         self.web_driver.find_element(by=By.ID, value="pin").send_keys(pin_code)
-        self.web_driver.find_element(by=By.ID, value="login-submit").click()
+        login_submit = self.web_driver.find_element(by=By.ID, value="login-submit")
+        self.web_driver.execute_script("arguments[0].click();", login_submit)
         sleep(2)
 
     def _get_teams_for_prediction(self, home_or_away: HomeOrAway) -> List[str]:
