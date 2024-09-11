@@ -5,6 +5,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from auto_super_six.datamodel.home_or_away import HomeOrAway
 
@@ -20,11 +22,18 @@ class SuperSixWebpage:
         self.web_driver.get(url=super_six_url)
 
     def _accept_cookies(self) -> None:
-        sleep(3)
-        self.web_driver.find_element(
-            by=By.ID, value="onetrust-accept-btn-handler"
-        ).click()
-        sleep(1)
+        cookies_elem = (
+            WebDriverWait(driver=self.web_driver, timeout=30)
+            .until(
+                method=EC.element_to_be_clickable(
+                    (
+                        By.ID,
+                        "onetrust-accept-btn-handler"
+                    )
+                )
+            )
+        )
+        self.web_driver.execute_script("arguments[0].click();", cookies_elem)
 
     def login(self, username: str, pin_code: str) -> None:
         self._accept_cookies()
