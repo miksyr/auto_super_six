@@ -5,8 +5,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 from auto_super_six.datamodel.home_or_away import HomeOrAway
 
@@ -22,16 +22,8 @@ class SuperSixWebpage:
         self.web_driver.get(url=super_six_url)
 
     def _accept_cookies(self) -> None:
-        cookies_elem = (
-            WebDriverWait(driver=self.web_driver, timeout=30)
-            .until(
-                method=EC.element_to_be_clickable(
-                    (
-                        By.ID,
-                        "onetrust-accept-btn-handler"
-                    )
-                )
-            )
+        cookies_elem = WebDriverWait(driver=self.web_driver, timeout=30).until(
+            method=EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))
         )
         self.web_driver.execute_script("arguments[0].click();", cookies_elem)
 
@@ -45,9 +37,7 @@ class SuperSixWebpage:
 
     def _get_teams_for_prediction(self, home_or_away: HomeOrAway) -> List[str]:
         teams = []
-        for v in self.web_driver.find_elements(
-            by=By.XPATH, value=f"//*[contains(@id, '-team-{home_or_away.value}')]"
-        ):
+        for v in self.web_driver.find_elements(by=By.XPATH, value=f"//*[contains(@id, '-team-{home_or_away.value}')]"):
             if v.text:
                 teams.append(v.text.lower())
         return teams
@@ -55,9 +45,7 @@ class SuperSixWebpage:
     def get_matches_to_predict(self) -> List[WebElement]:
         self.web_driver.get(f"{self.super_six_url}/play")
         sleep(2)
-        return self.web_driver.find_elements(
-            by=By.XPATH, value="//*[contains(@data-test-id, 'match-container-')]"
-        )
+        return self.web_driver.find_elements(by=By.XPATH, value="//*[contains(@data-test-id, 'match-container-')]")
 
     @staticmethod
     def get_competition(match_container_element: WebElement) -> str:
@@ -65,9 +53,7 @@ class SuperSixWebpage:
 
     @staticmethod
     def get_team_names(match_container_element: WebElement) -> Tuple[str, ...]:
-        team_containers = match_container_element.find_elements(
-            by=By.CLASS_NAME, value="team-container"
-        )
+        team_containers = match_container_element.find_elements(by=By.CLASS_NAME, value="team-container")
         return tuple(v.text.lower() for v in team_containers)
 
     def is_already_submitted(self) -> bool:
