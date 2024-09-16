@@ -37,13 +37,6 @@ class SuperSixWebpage:
         self.web_driver.execute_script("arguments[0].click();", login_submit)
         sleep(2)
 
-    def _get_teams_for_prediction(self, home_or_away: HomeOrAway) -> List[str]:
-        teams = []
-        for v in self.web_driver.find_elements(by=By.XPATH, value=f"//*[contains(@id, '-team-{home_or_away.value}')]"):
-            if v.text:
-                teams.append(v.text.lower())
-        return teams
-
     def get_matches_to_predict(self) -> List[WebElement]:
         self.web_driver.get(f"{self.super_six_url}/play")
         sleep(2)

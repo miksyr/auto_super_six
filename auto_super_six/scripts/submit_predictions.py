@@ -68,7 +68,7 @@ def submit_predictions(run_headless: bool = True, strategy_name: str = "sample_t
 
         probability_of_winning = np.product([(1 / v.get_best_back_price().price) for v in correct_score_predictions])
         odds_of_winning = 1 / probability_of_winning
-        print(f"chances of wininning: 1 in {odds_of_winning}")
+        print(f"chances of winning: 1 in {odds_of_winning}")
 
         super_six_webpage.submit_predictions()
 
