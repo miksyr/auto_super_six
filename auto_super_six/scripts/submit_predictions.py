@@ -64,7 +64,7 @@ def submit_predictions(run_headless: bool = True, strategy_name: str = "sample_t
             score_predictions=tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions)
         )
 
-        super_six_webpage.input_golden_goal_minute(golden_goal_minute=15)
+        super_six_webpage.input_golden_goal_minute(golden_goal_minute=10)
 
         probability_of_winning = np.product([(1 / v.get_best_back_price().price) for v in correct_score_predictions])
         odds_of_winning = 1 / probability_of_winning
