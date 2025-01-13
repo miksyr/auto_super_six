@@ -1,0 +1,16 @@
+python_sources(
+    name="auto_super_six",
+    sources=["auto_super_six/**/*.py"],
+    dependencies=[
+        "requirements#betfair-api-client",
+        "requirements#fire",
+        "requirements#numpy",
+        "requirements#selenium",
+    ],
+)
+
+python_tests(
+    name="test",
+    sources=["tests/**/*.py"],
+    dependencies=[":auto_super_six"]
+)
