@@ -31,4 +31,4 @@ jobs:
 
     - name: Test `auto_super_six` lib
       run: |
-        pants test auto_super_six::
+        pants test ::
