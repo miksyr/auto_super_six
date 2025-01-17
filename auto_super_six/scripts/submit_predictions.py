@@ -11,9 +11,7 @@ from auto_super_six.utils.betfair_events import get_betfair_event
 from auto_super_six.utils.webdriver import get_firefox_web_driver
 
 
-def submit_predictions(
-    run_headless: bool = True, strategy_name: str = "sample_topn", golden_goal_minute: int = 10
-):
+def submit_predictions(run_headless: bool = True, strategy_name: str = "sample_topn", golden_goal_minute: int = 10):
     strategy = PickingStrategyMap.get_strategy(strategy_name=strategy_name)
 
     with get_firefox_web_driver(run_headless=run_headless, implicit_wait_time=10) as web_driver:
