@@ -21,8 +21,8 @@ def test_sample_top_n_probabilities(back_odds: List[float], n: int, top_n_odds: 
         runner.update_back_odds(availableToBack=[RunnerPrice(betType="back", price=back_odd, size=1)])
         runners.append(runner)
 
-    strategy = SampleTopNProbabilities()
-    selections = [strategy.pick_selection(runners=runners, n=n) for _ in range(NUM_SELECTIONS)]
+    strategy = SampleTopNProbabilities(n=n)
+    selections = [strategy.pick_selection(runners=runners) for _ in range(NUM_SELECTIONS)]
     assert len(selections) == NUM_SELECTIONS
     assert len(set(selections)) > 1
     for s in selections:

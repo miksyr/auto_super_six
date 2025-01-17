@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 import fire
 import numpy as np
@@ -13,7 +12,7 @@ from auto_super_six.utils.webdriver import get_firefox_web_driver
 
 
 def submit_predictions(
-    run_headless: bool = True, strategy_name: str = "sample_topn", golden_goal_minute: int = 10, top_n: Optional[int] = 3
+    run_headless: bool = True, strategy_name: str = "sample_topn", golden_goal_minute: int = 10
 ):
     strategy = PickingStrategyMap.get_strategy(strategy_name=strategy_name)
 
@@ -53,17 +52,14 @@ def submit_predictions(
             betfair_client.update_prices_for_events(events=[betfair_event])
             all_correct_score_runners = betfair_event.get_all_markets()[0].get_all_runners()
             numeric_only_score_runners = [r for r in all_correct_score_runners if "-" in r.runnerName]
-            if strategy_name == "sample_topn":
-                runner_choice = strategy.pick_selection(runners=numeric_only_score_runners, n=top_n)
-            else:
-                runner_choice = strategy.pick_selection(runners=numeric_only_score_runners)
+            runner_choice = strategy.pick_selection(runners=numeric_only_score_runners)
             correct_score_predictions.append(runner_choice)
 
         print(tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions))
         print()
 
         super_six_webpage.input_match_predictions(
-            score_predictions=tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions)
+            score_predictions=tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions)  # type: ignore
         )
 
         super_six_webpage.input_golden_goal_minute(golden_goal_minute=golden_goal_minute)
