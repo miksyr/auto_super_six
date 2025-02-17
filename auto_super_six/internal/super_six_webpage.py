@@ -29,7 +29,7 @@ class SuperSixWebpage:
         self._accept_cookies()
         login = self.web_driver.find_element(by=By.ID, value="account-bar-login-btn")
         self.web_driver.execute_script("arguments[0].click();", login)
-        sleep(1)
+        sleep(2)
         self.web_driver.find_element(by=By.ID, value="username").send_keys(username)
         self.web_driver.find_element(by=By.ID, value="pin").send_keys(pin_code)
         login_submit = self.web_driver.find_element(by=By.ID, value="login-submit")
