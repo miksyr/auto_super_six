@@ -1,6 +1,10 @@
 from time import sleep
 
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import (
+    JavascriptException,
+    TimeoutException,
+    WebDriverException,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -33,7 +37,10 @@ class SuperSixWebpage:
                 WebDriverWait(driver=self.web_driver, timeout=self.timeout).until(
                     lambda driver: driver.execute_script("return jQuery.active == 0")
                 )
-        except Exception:
+        except (JavascriptException, WebDriverException, TimeoutException):
+            # If jQuery is not available or there's an error checking for it,
+            # continue without waiting for AJAX. This is expected on some pages
+            # that don't use jQuery or when JavaScript execution fails
             pass
 
     def _wait_for_element(self, by: By, value: str, condition: EC = EC.presence_of_element_located):
