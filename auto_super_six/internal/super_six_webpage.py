@@ -16,8 +16,8 @@ class SuperSixWebpage:
     def __init__(
         self,
         web_driver: WebDriver,
+        timeout: int,
         super_six_url: str = "https://super6.skysports.com/",
-        timeout: int = 60,
     ):
         self.web_driver = web_driver
         self.super_six_url = super_six_url

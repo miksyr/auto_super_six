@@ -15,7 +15,7 @@ def submit_predictions(run_headless: bool = True, strategy_name: str = "sample_t
     strategy = PickingStrategyMap.get_strategy(strategy_name=strategy_name)
 
     with get_firefox_web_driver(run_headless=run_headless, implicit_wait_time=10) as web_driver:
-        super_six_webpage = SuperSixWebpage(web_driver=web_driver)
+        super_six_webpage = SuperSixWebpage(web_driver=web_driver, timeout=5)
         super_six_webpage.login(
             username=os.environ["SUPER_SIX_USERNAME"],
             pin_code=os.environ["SUPER_SIX_PIN"],
