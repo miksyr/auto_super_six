@@ -36,6 +36,7 @@ def submit_predictions(run_headless: bool = True, strategy_name: str = "sample_t
         )
 
         correct_score_predictions = []
+        event_names = []
         for match in matches_to_predict:
             competition = SuperSixCompetition.get_competition_enum(
                 competition_name=super_six_webpage.get_competition(match_container_element=match)
@@ -47,14 +48,15 @@ def submit_predictions(run_headless: bool = True, strategy_name: str = "sample_t
                 away_team_name=away_team_name,
                 competition_id=competition.betfair_competition_id,
             )
+            event_names.append(betfair_event.eventName)
             betfair_client.update_prices_for_events(events=[betfair_event])
             all_correct_score_runners = betfair_event.get_all_markets()[0].get_all_runners()
             numeric_only_score_runners = [r for r in all_correct_score_runners if "-" in r.runnerName]
             runner_choice = strategy.pick_selection(runners=numeric_only_score_runners)
             correct_score_predictions.append(runner_choice)
 
-        print(tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions))
-        print()
+        for event_name, score in zip(event_names, correct_score_predictions):
+            print(event_name, tuple(score.runnerName.split(" - ", 1)))
 
         super_six_webpage.input_match_predictions(
             score_predictions=tuple(score.runnerName.split(" - ", 1) for score in correct_score_predictions)  # type: ignore

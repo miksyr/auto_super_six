@@ -1,8 +1,9 @@
 from betfair_api_client import BetfairApiClient
+from betfair_api_client.datamodel.event import Event
 from betfair_api_client.datamodel.market_types import MarketTypes
 
 
-def _match_by_text_query(betfair_client: BetfairApiClient, text_query: str, competition_id: int):
+def _match_by_text_query(betfair_client: BetfairApiClient, text_query: str, competition_id: int) -> Event:
     betfair_events = betfair_client.get_coming_events(
         sportTypeId=1,
         marketTypes=[MarketTypes.FULLTIME_SCORELINE],
@@ -20,7 +21,7 @@ def get_betfair_event(
     home_team_name: str,
     away_team_name: str,
     competition_id: int,
-):
+) -> Event:
     try:
         full_match = f"{home_team_name} v {away_team_name}"
         return _match_by_text_query(
