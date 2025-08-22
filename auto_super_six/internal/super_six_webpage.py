@@ -63,11 +63,16 @@ class SuperSixWebpage:
         login = self._wait_for_element(by=By.ID, value="account-bar-login-btn", condition=EC.element_to_be_clickable)
         self.web_driver.execute_script("arguments[0].click();", login)
         sleep(2)
+        try:
+            # there can be a second cookie popup here
+            self._accept_cookies()
+        except TimeoutException:
+            pass
         username_field = self._wait_for_element(by=By.ID, value="username", condition=EC.visibility_of_element_located)
-        pin_field = self._wait_for_element(by=By.ID, value="pin", condition=EC.visibility_of_element_located)
+        pin_field = self._wait_for_element(by=By.ID, value="password", condition=EC.visibility_of_element_located)
         username_field.send_keys(username)
         pin_field.send_keys(pin_code)
-        login_submit = self._wait_for_element(by=By.ID, value="login-submit", condition=EC.element_to_be_clickable)
+        login_submit = self._wait_for_element(by=By.ID, value="login", condition=EC.element_to_be_clickable)
         self.web_driver.execute_script("arguments[0].click();", login_submit)
         sleep(3)
         self._wait_for_page_load()
