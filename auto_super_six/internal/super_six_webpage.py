@@ -155,7 +155,7 @@ class SuperSixWebpage:
 
     def input_golden_goal_minute(self, golden_goal_minute: int) -> None:
         golden_goal_element = self._wait_for_element(
-            by=By.XPATH, value="//input[@data-test-id = 'play-golden-goal-input']", condition=EC.visibility_of_element_located
+            by=By.XPATH, value="//input[@data-test-id = 'golden-goal-input']", condition=EC.visibility_of_element_located
         )
         golden_goal_element.clear()
         golden_goal_element.send_keys(golden_goal_minute)
